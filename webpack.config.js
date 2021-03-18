@@ -2,7 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
+const { EnvironmentPlugin } = require('webpack');
 const { loader } = require('mini-css-extract-plugin');
+
+require('dotenv').config();
 
 module.exports = {
   entry: './src/index.js',
@@ -51,8 +54,13 @@ module.exports = {
       filename: 'assets/[name].css',
     }),
     new Dotenv({
-      path: path.resolve(__dirname, 'env')
-    })
+      path: path.resolve(__dirname, 'env'),
+    }),
+    new EnvironmentPlugin([
+      'PAYPAL_CLIENT_ID',
+      'GOOGLE_MAPS_API_KEY',
+      'API_URL',
+    ]),
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
